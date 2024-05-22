@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .calculator {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+        .button {
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .display {
+            width: calc(100% - 20px);
+            height: 50px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 24px;
+            box-sizing: border-box;
+            text-align: right;
+            background-color: #e0e0e0; /* Background color */
+        }
+        .result {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+            color: blue;
+        }
+        .result span {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #CCCCCC;
+        }
+
+        @keyframes shake {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(0.9); }
+            75% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .shake-animation {
+            animation: shake 0.4s;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Fancy Calculator</h1>
+        <input type="text" id="display" class="display" readonly>
+        <div>
+            <button id="button-7" class="button calculator-button" onclick="appendToDisplay('7')">7</button>
+            <button id="button-8" class="button calculator-button" onclick="appendToDisplay('8')">8</button>
+            <button id="button-9" class="button calculator-button" onclick="appendToDisplay('9')">9</button>
+            <button id="button-+" class="button calculator-button" onclick="appendToDisplay('+')">+</button>
+        </div>
+        <div>
+            <button id="button-4" class="button calculator-button" onclick="appendToDisplay('4')">4</button>
+            <button id="button-5" class="button calculator-button" onclick="appendToDisplay('5')">5</button>
+            <button id="button-6" class="button calculator-button" onclick="appendToDisplay('6')">6</button>
+            <button id="button--" class="button calculator-button" onclick="appendToDisplay('-')">-</button>
+        </div>
+        <div>
+            <button id="button-1" class="button calculator-button" onclick="appendToDisplay('1')">1</button>
+            <button id="button-2" class="button calculator-button" onclick="appendToDisplay('2')">2</button>
+            <button id="button-3" class="button calculator-button" onclick="appendToDisplay('3')">3</button>
+            <button id="button-*" class="button calculator-button" onclick="appendToDisplay('*')">*</button>
+        </div>
+        <div>
+            <button id="button-0" class="button calculator-button" onclick="appendToDisplay('0')">0</button>
+            <button id="button-clear" class="button" onclick="clearDisplay()">C</button>
+            <button id="button-equal" class="button" onclick="calculateResult()">=</button>
+            <button id="button-/" class="button calculator-button" onclick="appendToDisplay('/')">/</button>
+        </div>
+
+        <div class="footer">
+            Designed by Shawn Li with help of ChatGPT.
+        </div>
+    </div>
+    
+
+    <script>
+        // Function to handle keyboard input
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+
+            // Check if the key is a digit or an operator
+            if (/[0-9\+\-\*\/\.]/.test(key)) {
+                appendToDisplay(key);
+                document.getElementById(`button-${key}`).classList.add('shake-animation');
+                setTimeout(function() {
+                    document.getElementById(`button-${key}`).classList.remove('shake-animation');
+                }, 400);
+            } else if (key === 'Enter') {
+                calculateResult();
+                document.getElementById('button-equal').classList.add('shake-animation');
+                setTimeout(function() {
+                    document.getElementById('button-equal').classList.remove('shake-animation');
+                }, 400);
+            } else if (key === 'Escape') {
+                clearDisplay();
+                document.getElementById('button-clear').classList.add('shake-animation');
+                setTimeout(function() {
+                    document.getElementById('button-clear').classList.remove('shake-animation');
+                }, 400);
+            }
+        });
+
+        // Existing functions for appending to display, clearing display, and calculating result
+        function appendToDisplay(value) {
+            document.getElementById('display').value += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function calculateResult() {
+            var expression = document.getElementById('display').value;
+            var result = eval(expression);
+            if (!isNaN(result)) {
+                result = parseFloat(result.toFixed(3)); // Limit to three digits after decimal
+            }
+            document.getElementById('display').value = result;
+        }
+    </script>
+
+
+</body>
+</html>
